@@ -32,6 +32,8 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
     val REQUEST_CODE = 200
     private var mCurrentPhotoPath: String? = null;
     private val PERMISSION_REQUEST_CODE: Int = 101
+    private var productID:Int = 0
+    private var productImage:String? = null
 
     companion object {
         fun newInstance() = UpdateProductFragment()
@@ -87,6 +89,7 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
     }
 
     fun setProductData(product: Products){
+        productID = product.id
         etProductName.setText(product.name)
         etProductDescription.setText(product.description)
         etProductRegPrice.setText(product.regular_price)
@@ -111,11 +114,13 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
     override fun onClick(v: View?) {
         if(v != null){
             when (v.getId()) {
-                R.id.fabCaptureImage -> {
-                    captureProductImage()
+                R.id.fabCaptureImage -> captureProductImage()
 
-                }
                 R.id.ivDisplayProductImage -> displayProductImage()
+
+                R.id.btUpdateProduct -> updateProductDetails()
+
+                R.id.btDeleteProduct ->deleteProductDetails()
             }
         }
     }
@@ -139,7 +144,29 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
     }
 
 
+    fun updateProductDetails(){
+        val product:Products = Products(productID,
+            etProductName.getText().toString(),
+            etProductDescription.getText().toString(),
+            etProductRegPrice.getText().toString(),
+            etProductSalePrice.getText().toString(),
+            productImage,
+            etProductColor.getText().toString(),
+            etProductStores.getText().toString())
+        updateProductViewModel.updateProduct(product)
+    }
 
+    fun deleteProductDetails(){
+        val product:Products = Products(productID,
+            etProductName.getText().toString(),
+            etProductDescription.getText().toString(),
+            etProductRegPrice.getText().toString(),
+            etProductSalePrice.getText().toString(),
+            productImage,
+            etProductColor.getText().toString(),
+            etProductStores.getText().toString())
+        updateProductViewModel.deleteProduct(product)
+    }
 
 
 }
