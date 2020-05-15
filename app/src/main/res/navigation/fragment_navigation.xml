@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_navigation"
+    app:startDestination="@+id/fabCreateProduct">
+
+    <fragment
+        android:id="@+id/fabCreateProduct"
+        android:name="com.example.fluperassignmet.ui.products.product_list.ProductListFragment"
+        android:label="Product List"
+        tools:layout="@layout/product_list_fragment">
+        <action
+            android:id="@+id/action_ProductListFragment_to_UpdateProductFragment"
+            app:destination="@id/fabUpdateProduct" />
+
+        <argument
+            android:name="myArg"
+            app:argType="string" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/fabUpdateProduct"
+        android:name="com.example.fluperassignmet.ui.products.update_product.UpdateProductFragment"
+        android:label="Create/Update Product"
+        tools:layout="@layout/update_product_fragment">
+
+    </fragment>
+
+</navigation>
