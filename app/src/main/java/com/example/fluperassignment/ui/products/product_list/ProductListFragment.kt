@@ -3,6 +3,7 @@ package com.example.fluperassignmet.ui.products.product_list
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
@@ -21,7 +22,7 @@ import com.leopold.mvvm.ui.BindingFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProductListFragment : BindingFragment<ProductListFragmentBinding>() {
+class ProductListFragment : BindingFragment<ProductListFragmentBinding>(), OnProductItemImageClickedListener{
 
     companion object {
         fun newInstance() =
@@ -68,6 +69,9 @@ class ProductListFragment : BindingFragment<ProductListFragmentBinding>() {
 
     }
 
+    override fun productItemImageClicked(stringImage: String) {
+         Toast.makeText(activity,"Image clicked",Toast.LENGTH_SHORT).show()
+     }
 
 
 }

@@ -120,7 +120,7 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
 
                 R.id.btUpdateProduct -> updateProductDetails()
 
-                R.id.btDeleteProduct ->deleteProductDetails()
+                R.id.btDeleteProduct -> deleteProductDetails()
             }
         }
     }

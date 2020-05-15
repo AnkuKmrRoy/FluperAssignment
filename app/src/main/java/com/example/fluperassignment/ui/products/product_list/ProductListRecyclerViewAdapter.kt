@@ -36,19 +36,25 @@ class ProductListRecyclerViewAdapter(private val productList: List<Products>,pri
     override fun onBindViewHolder(holder: ProductListRecyclerViewHolder, position: Int) {
         holder.bind(productList[position],clickListener)
     }
+
+
+
 }
 
 class ProductListRecyclerViewHolder(val binding: ProductListRowItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(product: Products,clickListener: (Products) -> Unit) {
+        val productItemImageClicked: OnProductItemImageClickedListener? = null
+        var productPhoto:String? = null
         binding.tvProdName.text = product.name
         binding.tvProdDescription.text = product.description
         binding.tvProdRegPrice.text = product.regular_price
         binding.tvProdSalePrice.text = product.sale_price
         binding.tvProdColor.text = product.color_id
         binding.tvProdStores.text = product.store_id
-        val imageBytes = android.util.Base64.decode(product.product_photo, 0)
+        productPhoto = product.product_photo
+        val imageBytes = android.util.Base64.decode(productPhoto, 0)
         val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
         binding.icProductImage.setImageBitmap(image)
 
@@ -57,8 +63,15 @@ class ProductListRecyclerViewHolder(val binding: ProductListRowItemBinding) :
         }
 
         binding.icProductImage.setOnClickListener{
-            //clickListener(product.product_photo)
+            productPhoto?.let { it1 -> productItemImageClicked?.productItemImageClicked(it1) }
         }
 
     }
+
+
 }
+
+interface OnProductItemImageClickedListener{
+    fun productItemImageClicked(stringImage:String)
+}
+
