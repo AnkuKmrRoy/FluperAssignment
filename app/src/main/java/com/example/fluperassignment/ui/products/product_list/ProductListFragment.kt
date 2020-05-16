@@ -12,9 +12,10 @@ import com.example.fluperassignmet.data.db.entity.Products
 import com.example.fluperassignmet.databinding.ProductListFragmentBinding
 import com.example.fluperassignmet.ui.view_model.ProductViewModel
 import com.leopold.mvvm.ui.BindingFragment
+import kotlinx.android.synthetic.main.product_list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class ProductListFragment : BindingFragment<ProductListFragmentBinding>(), OnProductItemImageClickedListener{
+class ProductListFragment : BindingFragment<ProductListFragmentBinding>(), OnProductItemImageClickedListener,View.OnClickListener{
 
     companion object {
         fun newInstance() =
@@ -34,6 +35,7 @@ class ProductListFragment : BindingFragment<ProductListFragmentBinding>(), OnPro
         binding.productListViewModel = productListViewModel
         binding.setLifecycleOwner(this)
         initRecyclerView()
+        fabCreateProduct.setOnClickListener(this)
     }
 
 
@@ -80,6 +82,19 @@ class ProductListFragment : BindingFragment<ProductListFragmentBinding>(), OnPro
         activity?.findNavController(R.id.nav_host_fragment)?.navigate( R.id.action_ProductListFragment_to_UpdateProductFragment,createProduct)
 
 
+    }
+
+    override fun onClick(v: View?) {
+
+        when (v?.getId()) {
+
+            R.id.fabCreateProduct -> {
+                val createProduct = Bundle().apply {
+                    putBoolean("IS_CREATE_PRODUCT", true)
+                }
+                activity?.findNavController(R.id.nav_host_fragment)?.navigate( R.id.action_ProductListFragment_to_UpdateProductFragment,createProduct)
+            }
+        }
     }
 
 }

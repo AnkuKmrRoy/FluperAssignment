@@ -5,11 +5,13 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import com.example.fluperassignmet.R
 import com.example.fluperassignmet.data.db.entity.Products
@@ -18,7 +20,8 @@ import com.example.fluperassignmet.ui.view_model.ProductViewModel
 import com.leopold.mvvm.ui.BindingFragment
 import kotlinx.android.synthetic.main.update_product_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.lang.Exception
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),View.OnClickListener {
 
@@ -29,6 +32,7 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
     private val PERMISSION_REQUEST_CODE: Int = 101
     private var productID:Int = 0
     private var productImage:String? = null
+    private var mUri: Uri? = null
 
     companion object {
         fun newInstance() = UpdateProductFragment()
@@ -131,12 +135,42 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
         startActivityForResult(cameraIntent, REQUEST_CODE)
     }
 
+
+
+    /*private fun capturePhoto(){
+        val capturedImage = File(externalCacheDir, "My_Captured_Photo.jpg")
+        if(capturedImage.exists()) {
+            capturedImage.delete()
+        }
+        capturedImage.createNewFile()
+        mUri = if(Build.VERSION.SDK_INT >= 24){
+            FileProvider.getUriForFile(this, "info.camposha.kimagepicker.fileprovider",
+                capturedImage)
+        } else {
+            Uri.fromFile(capturedImage)
+        }
+
+        val intent = Intent("android.media.action.IMAGE_CAPTURE")
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri)
+        startActivityForResult(intent, REQUEST_CODE)
+    }*/
+
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null){
             val imageBitmap = data.extras?.get("data") as Bitmap
             ivDisplayProductImage.setImageBitmap(imageBitmap)
+            productImage = bitMapToString(imageBitmap)
         }
+    }
+
+    fun bitMapToString(bitmap: Bitmap): String? {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val b: ByteArray = baos.toByteArray()
+        return android.util.Base64.encodeToString(b, android.util.Base64.DEFAULT)
     }
 
     fun displayProductImage(){
