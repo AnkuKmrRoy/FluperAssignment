@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.eazypermissions.common.model.PermissionResult
 import com.eazypermissions.dsl.extension.requestPermissions
+import com.example.fluperassignment.data.db.data_model.Stores
 import com.example.fluperassignmet.R
 import com.example.fluperassignmet.data.db.entity.Products
 import com.example.fluperassignmet.databinding.UpdateProductFragmentBinding
@@ -96,8 +97,9 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
         etProductDescription.setText(product.description)
         etProductRegPrice.setText(product.regular_price)
         etProductSalePrice.setText(product.sale_price)
-        etProductColor.setText(product.color_id)
-        etProductStores.setText(product.store_id)
+        etProductColor.setText(product.colors?.get(0))
+        etProductStores.setText(product.stores?.get(0)?.name)
+        etProductStoreAddress.setText(product.stores?.get(0)?.address)
         productImage = product.product_photo
         try {
             val imageBytes = android.util.Base64.decode(product.product_photo, 0)
@@ -115,6 +117,7 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
         etProductSalePrice.getText().clear()
         etProductColor.getText().clear()
         etProductStores.getText().clear()
+        etProductStoreAddress.getText().clear()
         ivDisplayProductImage.setImageBitmap(null)
     }
 
@@ -152,6 +155,7 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null){
+
             val extras = data.extras
             val imageBitmap = extras?.get("data") as Bitmap
             ivDisplayProductImage.setImageBitmap(imageBitmap)
@@ -172,26 +176,51 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
 
 
     fun updateProductDetails(){
+        val storeList: MutableList<Stores>? = mutableListOf<Stores>()
+        storeList?.add(0,
+                Stores(
+                    0,
+                    etProductStores.getText().toString(),
+                    etProductStoreAddress.getText().toString()
+                )
+            )
+
+        val colorList: MutableList<String>? = mutableListOf<String>()
+        colorList?.add(0,etProductColor.getText().toString())
+
         val product:Products = Products(productID,
             etProductName.getText().toString(),
             etProductDescription.getText().toString(),
             etProductRegPrice.getText().toString(),
             etProductSalePrice.getText().toString(),
             productImage,
-            etProductColor.getText().toString(),
-            etProductStores.getText().toString())
+            colorList,
+            storeList)
         updateProductViewModel.updateProduct(product)
     }
 
     fun deleteProductDetails(){
+        val storeList: MutableList<Stores>? = null
+        storeList?.apply {
+            add(0,
+                Stores(
+                    0,
+                    etProductStores.getText().toString(),
+                    etProductStoreAddress.getText().toString()
+                )
+            ) }
+
+        val colorList: MutableList<String>? = null
+        colorList?.apply {
+            add(0,etProductColor.getText().toString()) }
         val product:Products = Products(productID,
             etProductName.getText().toString(),
             etProductDescription.getText().toString(),
             etProductRegPrice.getText().toString(),
             etProductSalePrice.getText().toString(),
             productImage,
-            etProductColor.getText().toString(),
-            etProductStores.getText().toString())
+            colorList,
+            storeList)
         updateProductViewModel.deleteProduct(product)
     }
 

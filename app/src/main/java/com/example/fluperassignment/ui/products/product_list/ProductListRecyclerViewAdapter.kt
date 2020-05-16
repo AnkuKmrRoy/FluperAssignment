@@ -47,8 +47,8 @@ class ProductListRecyclerViewHolder(val binding: ProductListRowItemBinding) :
         binding.tvProdDescription.text = product.description
         binding.tvProdRegPrice.text = product.regular_price
         binding.tvProdSalePrice.text = product.sale_price
-        binding.tvProdColor.text = product.color_id
-        binding.tvProdStores.text = product.store_id
+        binding.tvProdColor.text = product.colors?.get(0)
+        binding.tvProdStores.text = product.stores?.get(0)?.name
         productPhoto = product.product_photo
         try {
             val imageBytes = android.util.Base64.decode(productPhoto, 0)

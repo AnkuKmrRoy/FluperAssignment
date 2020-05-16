@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.fluperassignment.data.db.converter.ColorsConverter
+import com.example.fluperassignment.data.db.converter.StoresConverters
 import com.example.fluperassignmet.data.db.FluperAssignmentDatabase.Companion.DB_VERSION
 import com.example.fluperassignmet.data.db.dao.ProductsDao
 import com.example.fluperassignmet.data.db.entity.Products
 
 @Database(entities = [Products::class], version = DB_VERSION, exportSchema = false)
-
+@TypeConverters(StoresConverters::class, ColorsConverter::class)
 abstract class FluperAssignmentDatabase :RoomDatabase(){
     abstract fun getProductsDao(): ProductsDao
 

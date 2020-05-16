@@ -23,7 +23,7 @@
             android:id="@+id/etProductName"
             android:hint="Name"
             android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             android:text="@={updateProductViewModel.prodName}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -33,7 +33,7 @@
             android:hint="Description"
             android:text="@={updateProductViewModel.prodDesc}"
             android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -42,7 +42,7 @@
             android:hint="Regular Price"
             android:text="@={updateProductViewModel.prodRegPrice}"
             android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -51,7 +51,7 @@
             android:hint="Sale Price"
             android:text="@={updateProductViewModel.prodSalePrice}"
             android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content">
         <TextView
             android:text="Product Image"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <FrameLayout
@@ -89,17 +89,27 @@
             android:id="@+id/etProductColor"
             android:hint="Color"
             android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             android:text="@={updateProductViewModel.prodColor}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+
         <EditText
             android:id="@+id/etProductStores"
-            android:hint="Stores"
+            android:hint="Store Name"
             android:text="@={updateProductViewModel.prodStores}"
             android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/etProductStoreAddress"
+            android:hint="Store Address"
+            android:text="@={updateProductViewModel.prodStoresAddress}"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_12ssp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

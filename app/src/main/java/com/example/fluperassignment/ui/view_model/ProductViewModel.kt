@@ -7,14 +7,16 @@ import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.fluperassignment.data.db.data_model.Stores
 import com.example.fluperassignmet.core.BaseViewModel
 import com.example.fluperassignmet.data.db.entity.Products
 import com.example.fluperassignmet.data.repositories.ProductsRepositories
 import com.example.fluperassignmet.utils.Event
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.update_product_fragment.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.json.JSONArray
-import org.json.JSONObject
 import java.io.IOException
 
 class ProductViewModel(private val repository: ProductsRepositories) : BaseViewModel(), Observable {
@@ -44,6 +46,8 @@ class ProductViewModel(private val repository: ProductsRepositories) : BaseViewM
     val prodColor = MutableLiveData<String>()
     @Bindable
     val prodStores = MutableLiveData<String>()
+    @Bindable
+    val prodStoresAddress = MutableLiveData<String>()
 
 
     private val statusMessage = MutableLiveData<Event<String>>()
@@ -58,8 +62,15 @@ class ProductViewModel(private val repository: ProductsRepositories) : BaseViewM
         val pImage:String? = prodImage.value
         val pColor:String = prodColor.value!!
         val pStores:String = prodStores.value!!
+        val pStoreAddress:String = prodStoresAddress.value!!
 
-        insertProduct(Products(0,pName,pDesc,pRegPr,pSalePr,pImage,pColor,pStores))
+        val storeList: MutableList<Stores>? = mutableListOf<Stores>()
+        storeList?.add(0, Stores(0, pStores, pStoreAddress))
+
+        val colorList: MutableList<String>? = mutableListOf<String>()
+        colorList?.add(0,pColor)
+
+        insertProduct(Products(0,pName,pDesc,pRegPr,pSalePr,pImage,colorList,storeList))
 
         prodName.value = null
         prodDesc.value = null
@@ -68,6 +79,7 @@ class ProductViewModel(private val repository: ProductsRepositories) : BaseViewM
         prodImage.value = null
         prodColor.value = null
         prodStores.value = null
+        prodStoresAddress.value = null
     }
 
     fun insertProduct(product: Products): Job =
@@ -109,23 +121,29 @@ class ProductViewModel(private val repository: ProductsRepositories) : BaseViewM
     }
 
     fun saveDataInfoLocalDataBase(data:String) {
-        var productList:ArrayList<Products> = ArrayList();
+        /*var productList:ArrayList<Products> = ArrayList();
         val jsonProducts: JSONObject = JSONObject(data)
         var jsonarrayProducts: JSONArray = jsonProducts.getJSONArray("products")
         for (i in 0..jsonarrayProducts.length() - 1) {
             var json_objectProduct: JSONObject =jsonarrayProducts.getJSONObject(i)
-
+            val colorList:List<String>
             productList.add(Products(0 ,
                 json_objectProduct.getString("name") ,
                 json_objectProduct.getString("description"),
                 json_objectProduct.getString("regular_price"),
                 json_objectProduct.getString("sale_price"),
                 json_objectProduct.getString("product_photo"),
-                json_objectProduct.getString("color"),
-                json_objectProduct.getString("store")))
-        }
-        insertProduct(productList)
+                ,
+                json_objectProduct.getJSONArray("stores")))
+        }*/
+        insertProduct(fromString(data))
 
+    }
+
+
+    fun fromString(value: String): List<Products> {
+        val listType = object : TypeToken<List<Products>>() {}.type
+        return Gson().fromJson(value, listType)
     }
 
     fun insertProduct(productList:List<Products>): Job =
@@ -133,18 +151,6 @@ class ProductViewModel(private val repository: ProductsRepositories) : BaseViewM
             repository.insertProductListFromJson(productList)
         }
 
-    fun initUpdateAndDelete(product: Products){
-        /*prodName.value = product.name
-        prodDesc.value = product.description
-        prodRegPrice.value = product.regular_price
-        prodSalePrice.value = product.sale_price
-        prodColor.value = product.color_id
-        prodStores.value = product.store_id
-        prodImage.value = product.product_photo
-        isUpdateOrDelete = true
-        productToUpdateOrDelete = product*/
-        //selectedProduct(product)
-    }
 
     fun getProductById(id:Int):Job= viewModelScope.launch{
         repository.getProductUsingID(id)
