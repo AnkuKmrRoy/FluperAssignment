@@ -130,8 +130,6 @@
             <Button
                 android:id="@+id/btUpdateProduct"
                 android:text="Update"
-                android:onClick="@{()->updateProductViewModel.saveProductData()}"
-                android:layout_centerInParent="true"
                 android:textSize="@dimen/_16ssp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -139,7 +137,6 @@
             <Button
                 android:id="@+id/btDeleteProduct"
                 android:text="Delete"
-                android:layout_centerInParent="true"
                 android:textSize="@dimen/_16ssp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

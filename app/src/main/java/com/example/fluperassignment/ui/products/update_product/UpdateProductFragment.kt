@@ -18,6 +18,7 @@ import com.example.fluperassignmet.ui.view_model.ProductViewModel
 import com.leopold.mvvm.ui.BindingFragment
 import kotlinx.android.synthetic.main.update_product_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.lang.Exception
 
 class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),View.OnClickListener {
 
@@ -49,8 +50,9 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
         binding.setLifecycleOwner(this)
         fabCaptureImage.setOnClickListener(this)
         ivDisplayProductImage.setOnClickListener(this)
+        btUpdateProduct.setOnClickListener(this)
+        btDeleteProduct.setOnClickListener(this)
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -90,9 +92,14 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
         etProductSalePrice.setText(product.sale_price)
         etProductColor.setText(product.color_id)
         etProductStores.setText(product.store_id)
-        val imageBytes = android.util.Base64.decode(product.product_photo, 0)
-        val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-        ivDisplayProductImage.setImageBitmap(image)
+        productImage = product.product_photo
+        try {
+            val imageBytes = android.util.Base64.decode(product.product_photo, 0)
+            val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            ivDisplayProductImage.setImageBitmap(image)
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
     }
 
     fun clearProductData(){

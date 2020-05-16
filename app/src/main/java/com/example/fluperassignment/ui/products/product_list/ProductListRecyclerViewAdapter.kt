@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fluperassignmet.R
 import com.example.fluperassignmet.data.db.entity.Products
 import com.example.fluperassignmet.databinding.ProductListRowItemBinding
+import java.lang.Exception
 
 
 class ProductListRecyclerViewAdapter(private val productList: List<Products>, private val clickListener: OnProductItemImageClickedListener
@@ -49,9 +50,14 @@ class ProductListRecyclerViewHolder(val binding: ProductListRowItemBinding) :
         binding.tvProdColor.text = product.color_id
         binding.tvProdStores.text = product.store_id
         productPhoto = product.product_photo
-        val imageBytes = android.util.Base64.decode(productPhoto, 0)
-        val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-        binding.icProductImage.setImageBitmap(image)
+        try {
+            val imageBytes = android.util.Base64.decode(productPhoto, 0)
+            val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            binding.icProductImage.setImageBitmap(image)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
 
         binding.llProductItem.setOnClickListener {
             //clickListener(product)
