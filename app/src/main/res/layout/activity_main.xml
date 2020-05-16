@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="mainViewModel"
             type="com.example.fluperassignmet.ui.view_model.ProductViewModel" />

@@ -44,11 +44,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         setSupportActionBar(toolbar)
         navigationController = findNavController(R.id.nav_host_fragment)
 
-
-        fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
         displayProductList()
 
     }
