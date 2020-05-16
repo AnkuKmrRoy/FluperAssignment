@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.fluperassignmet"
-        minSdkVersion 19
+        minSdkVersion 20
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -126,4 +126,14 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
+
+
+    //For coroutines
+    implementation 'com.sagar:coroutinespermission:2.0.2'
+
+    //For LiveData
+    implementation 'com.sagar:livedatapermission:2.0.1'
+
+    //For Kotlin DSL
+    implementation 'com.sagar:dslpermission:2.0.1'
 }

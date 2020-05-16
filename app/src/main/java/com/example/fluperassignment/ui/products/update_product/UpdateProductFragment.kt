@@ -1,18 +1,21 @@
 package com.example.fluperassignmet.ui.products.update_product
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.core.content.FileProvider
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import com.eazypermissions.common.model.PermissionResult
+import com.eazypermissions.dsl.extension.requestPermissions
 import com.example.fluperassignmet.R
 import com.example.fluperassignmet.data.db.entity.Products
 import com.example.fluperassignmet.databinding.UpdateProductFragmentBinding
@@ -21,7 +24,6 @@ import com.leopold.mvvm.ui.BindingFragment
 import kotlinx.android.synthetic.main.update_product_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),View.OnClickListener {
 
@@ -119,7 +121,15 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
     override fun onClick(v: View?) {
         if(v != null){
             when (v.getId()) {
-                R.id.fabCaptureImage -> captureProductImage()
+                R.id.fabCaptureImage -> {
+                    requestPermissions(Manifest.permission.CAMERA) {
+                        requestCode = 1
+                        resultCallback = {
+                            handlePermissionsResult(this)
+                        }
+                    }
+
+                }
 
                 R.id.ivDisplayProductImage -> displayProductImage()
 
@@ -137,30 +147,13 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
 
 
 
-    /*private fun capturePhoto(){
-        val capturedImage = File(externalCacheDir, "My_Captured_Photo.jpg")
-        if(capturedImage.exists()) {
-            capturedImage.delete()
-        }
-        capturedImage.createNewFile()
-        mUri = if(Build.VERSION.SDK_INT >= 24){
-            FileProvider.getUriForFile(this, "info.camposha.kimagepicker.fileprovider",
-                capturedImage)
-        } else {
-            Uri.fromFile(capturedImage)
-        }
-
-        val intent = Intent("android.media.action.IMAGE_CAPTURE")
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri)
-        startActivityForResult(intent, REQUEST_CODE)
-    }*/
-
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null){
-            val imageBitmap = data.extras?.get("data") as Bitmap
+            val extras = data.extras
+            val imageBitmap = extras?.get("data") as Bitmap
             ivDisplayProductImage.setImageBitmap(imageBitmap)
             productImage = bitMapToString(imageBitmap)
         }
@@ -200,6 +193,50 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
             etProductColor.getText().toString(),
             etProductStores.getText().toString())
         updateProductViewModel.deleteProduct(product)
+    }
+
+
+    private fun handlePermissionsResult(permissionResult: PermissionResult) {
+        when (permissionResult) {
+            is PermissionResult.PermissionGranted -> {
+                captureProductImage()
+            }
+            is PermissionResult.PermissionDenied -> {
+                Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT).show()
+            }
+            is PermissionResult.ShowRational -> {
+                AlertDialog.Builder(requireContext())
+                    .setMessage("We need permission")
+                    .setTitle("Rational")
+                    .setNegativeButton("Cancel") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton("OK") { _, _ ->
+                        val permissions = when (permissionResult.requestCode) {
+                            1 -> {
+                                arrayOf(
+                                    Manifest.permission.CAMERA
+                                )
+                            }
+                            else -> {
+                                arrayOf()
+                            }
+                        }
+                        requestPermissions(*permissions) {
+                            requestCode = permissionResult.requestCode
+                            resultCallback = {
+                                handlePermissionsResult(this)
+                            }
+                        }
+                    }
+                    .create()
+                    .show()
+            }
+            is PermissionResult.PermissionDeniedPermanently -> {
+                Toast.makeText(requireContext(), "Denied permanently", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
 
