@@ -14,6 +14,10 @@
             android:id="@+id/action_ProductListFragment_to_UpdateProductFragment"
             app:destination="@id/fabUpdateProduct" />
 
+        <action
+            android:id="@+id/action_ProductListFragment_to_FullScreenImage"
+            app:destination="@id/fabShowImageInFullScreen" />
+
         <argument
             android:name="myArg"
             app:argType="string" />
@@ -24,6 +28,15 @@
         android:name="com.example.fluperassignmet.ui.products.update_product.UpdateProductFragment"
         android:label="Create/Update Product"
         tools:layout="@layout/update_product_fragment">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fabShowImageInFullScreen"
+        android:name="com.example.fluperassignment.ui.products.show_product_image.ShowProductImageFragment"
+        android:label="Create/Full Screen Image"
+        tools:layout="@layout/show_product_image_fragment">
+
 
     </fragment>
 

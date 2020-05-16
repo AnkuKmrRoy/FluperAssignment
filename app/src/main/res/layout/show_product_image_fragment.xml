@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="updateProductViewModel" type="com.example.fluperassignmet.ui.view_model.ProductViewModel"/>
+    </data>
+<FrameLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:clickable="false"
+    tools:context="com.example.fluperassignment.ui.products.show_product_image.ShowProductImageFragment">
+
+    <ImageView
+        android:id="@+id/ivFullScreenImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ImageView>
+
+</FrameLayout>
+</layout>

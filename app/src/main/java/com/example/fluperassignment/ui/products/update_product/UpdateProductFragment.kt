@@ -1,9 +1,7 @@
 package com.example.fluperassignmet.ui.products.update_product
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -12,9 +10,6 @@ import android.provider.MediaStore
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import com.example.fluperassignmet.R
 import com.example.fluperassignmet.data.db.entity.Products
@@ -23,7 +18,6 @@ import com.example.fluperassignmet.ui.view_model.ProductViewModel
 import com.leopold.mvvm.ui.BindingFragment
 import kotlinx.android.synthetic.main.update_product_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.io.File
 
 class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),View.OnClickListener {
 
@@ -126,7 +120,6 @@ class UpdateProductFragment : BindingFragment<UpdateProductFragmentBinding>(),Vi
     }
 
     fun captureProductImage(){
-
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, REQUEST_CODE)
     }
